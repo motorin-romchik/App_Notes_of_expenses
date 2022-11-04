@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Введите данные"
+        android:textSize="35dp"
+        android:textColor="#121F6A"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        style="bold"
+        />
+    <EditText
+        android:id="@+id/place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_below="@+id/text"
+        android:hint="Место" />
+    <EditText
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:textSize="24dp"
+        android:layout_below="@+id/place"
+        android:hint="Товары"/>
+    <EditText
+        android:id="@+id/sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_below="@+id/item"
+        android:hint="Сумма"/>
+    <Button
+        android:id="@+id/btnInsert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ввод"
+        android:textSize="24dp"
+        android:layout_below="@+id/sum"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:id="@+id/btnView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Список"
+        android:textSize="24dp"
+        android:layout_below="@+id/btnInsert"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Очистить список"
+        android:textSize="24dp"
+        android:layout_below="@id/btnView"
+        android:layout_marginTop="20dp"/>
+
+
+</RelativeLayout>
