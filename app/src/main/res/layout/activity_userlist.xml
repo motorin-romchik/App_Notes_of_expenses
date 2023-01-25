@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="415dp"
-        android:layout_height="678dp"
+        android:layout_height="695dp"
         android:layout_below="@id/textPro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnDel"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="34dp"-->
 
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@android:drawable/ic_menu_delete"-->
+<!--        tools:ignore="MissingConstraints" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnCha"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="34dp"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/btnDel"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@android:drawable/ic_menu_edit"-->
+
+<!--        />-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:clickable="true"
+        android:onClick="Main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
