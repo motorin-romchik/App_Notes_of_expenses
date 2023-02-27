@@ -2,82 +2,155 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 public class Userlist extends AppCompatActivity {
     RecyclerView recyclerView;
-    ArrayList<String> place,item,sum;
+    ArrayList<String> date,place,item,sum;
     List<Integer> delOb;
     private Context context;
     DBHelper DB;
     MyAdapter adapter;// объект класса
     TextView textPro;//поле текстовое под сумму
     ImageButton btnDelete,btnChange;//кнопки изменить/удалить
+    EditText placeF,itemF,sumF;
+    CardView block;
 
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userlist);
         DB = new DBHelper(this);
         delOb= new ArrayList<Integer>();
 
+        date = new ArrayList<>();
         place = new ArrayList<>();
         item = new ArrayList<>();
         sum = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerview);
+        ImageView imageDelete,imageChange;
+        imageDelete = findViewById(R.id.btnDelete);
+        imageChange = findViewById(R.id.btnChange);
 
 
-//        btnDelete = findViewById(R.id.btnDel);
-//        btnChange = findViewById(R.id.btnCha);
-
-        adapter = new MyAdapter(this,place,item, sum);
+        adapter = new MyAdapter(this,date,place,item, sum);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         displaydata();
-        adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+        adapter.setOnItemLongClickListener(new MyAdapter.OnItemLongClickListener() {
+            @Override
+            public void OnItemLongClick(int pos) {
+
+            }
+
+        });
+        adapter.setOnItemClickListenerChange(new MyAdapter.OnItemClickListenerCh(){
+
+            @Override
+            public void OnItemClickCh(int pos) {
+                placeF = findViewById(R.id.place);
+                itemF = findViewById(R.id.item);
+                sumF = findViewById(R.id.sum);
+
+                int poz = pos++;
+                String keytime_Field = date.get(poz);//key in DB
+                String first_Field = place.get(poz);
+                String second_Field = item.get(poz);
+                String third_Field = sum.get(poz);
+                DB.deleteParam(keytime_Field);
+
+                Intent i = new Intent(Userlist.this,MainActivity.class);
+                i.putExtra("PLACE",first_Field);
+                i.putExtra("ITEMS",second_Field);
+                i.putExtra("SUM",third_Field);
+                startActivity(i);
+                poz = 0;
+            }
+        });
+        adapter.setOnItemClickListenerDelete(new MyAdapter.OnItemClickListener() {
+
+
             @Override
             public void OnItemClick(int pos) {
-                //pos начинается с 0
                 int poz = pos++;
+                String keytime = date.get(poz);
                 String a = place.get(poz);// arraylists тоже начинаются с 1
                 String b = item.get(poz);
                 String c = sum.get(poz);
 
-//                place.remove(pos);
-//                item.remove(pos);
-//                sum.remove(pos);
-                adapter.notifyItemChanged(poz);
-                DB.deleteParam(a,b,c);
-                recreate();
+
+                int finalPoz = poz;
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(Userlist.this);
+                alertDialog
+                        .setMessage("Are You sure to DELETE?")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                adapter.notifyItemChanged(finalPoz);
+
+
+                                adapter.notifyItemRemoved(finalPoz);
+                                DB.deleteParam(keytime);
+//                                displaydata();
+                                Intent intent = getIntent();
+                                overridePendingTransition(0,0);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                                startActivity(new Intent(Userlist.this,Userlist.class));
+                                dialogInterface.cancel();
+
+
+
+                            }
+                        })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                dialogInterface.cancel();
+
+                            }
+                        });
+                alertDialog.show();
+
+
 
 
                 poz = 0;
                 pos = 0;
-
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+//                return true;
             }
         });
 
@@ -87,61 +160,10 @@ public class Userlist extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Userlist.this,MainActivity.class));
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
 
 
             }
         });
-
-//        btnChange.setOnClickListener(new View.OnClickListener() {
-//            int count = 0;
-//
-//            @Override
-//            public void onClick(View view) {
-//                 delOb= new ArrayList<Integer>();
-//                 delOb = adapter.getSelectedIds();
-//                 int []ids = new int[delOb.size()];
-//                 for(int i =0;i < ids.length;i++){
-//                     ids[i] = delOb.get(i);
-//                     count++;
-//                 }
-//
-//                //добавить id отмеченного элемента для изменения
-//                if(ids.length == 1){
-//                    DB.refresh(ids[0]);
-//                    startActivity(new Intent (Userlist.this,Userlist.class));
-//
-//                }
-//
-//
-//            }
-//        });
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                delOb= new ArrayList<Integer>();
-//                delOb = adapter.getSelectedIds();//array with 0 or 1
-//                int []ids = new int[delOb.size()];//ids[] have a 0 or 1 if Checked!
-//                for(int i =0;i < ids.length;i++){
-//                    ids[i] = delOb.get(i);
-//                }
-//
-////                int []best = new int[ids.length];
-////                for(int i=0;i<best.length;i++){
-////                    if(ids[i] == 1){
-////                        best[i] = i+1;
-////                    }
-////                    else{;}
-////                }
-//
-//                DB.deleteuserdata(ids);
-//
-//                startActivity(new Intent(Userlist.this, Userlist.class));
-//
-//            }
-//       });
-
 
     }
 
@@ -152,41 +174,49 @@ public class Userlist extends AppCompatActivity {
         textPro = findViewById(R.id.textPro);
 
 
-        Double rez= Double.valueOf(0);
+        long rez= 0;
         String srez;
 
-//        btnDelete.setVisibility(View.INVISIBLE);
-//        btnChange.setVisibility(View.INVISIBLE);//выключаю кнопки
-
-//        if (cursor.getCount()==0) {
-//            Toast.makeText(Userlist.this, "Список пуст", Toast.LENGTH_SHORT).show();
-//            return ;
-//        }
-//        else {
             while(cursor.moveToNext())
             {
-//                delOb.add(cursor.getString(1));
-                place.add(cursor.getString(0));
-                item.add(cursor.getString(1));
-                sum.add(cursor.getString(2));
 
-                srez = cursor.getString(2);
+                date.add(cursor.getString(0));
+                place.add(cursor.getString(1));
+                item.add(cursor.getString(2));
+                sum.add(cursor.getString(3));
+                srez = cursor.getString(3);
 
                 try {
 
-                    Double.parseDouble(srez);
-                    rez += Double.parseDouble(srez) ;
+//                    Double.parseDouble(srez);
+                    Long.parseLong(srez);
+//                    Integer.parseInt(srez);
+                    rez  += Long.parseLong(srez) ;
 
                 } catch (NumberFormatException o){
 
 
                 }
         }
-        if (rez >= 10000)
+        if (rez >= 35000)
             textPro.setTextColor(Color.parseColor("#CC0000"));
         else
             textPro.setTextColor(Color.parseColor("#03DAC5"));
 
-        if(rez > 0)  textPro.setText(Double.toString(rez)+" ₽");
+
+        if(rez > 0)  textPro.setText(rez +" ₽");
     }
+    public String createIdeal(String val){
+        int var = Integer.valueOf(val); //get int from str
+        val = (var < 10) ? "0"+val: val;
+
+        return val;
+
+    }
+
+    public void openMain(){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
 }

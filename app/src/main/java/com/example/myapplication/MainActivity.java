@@ -1,12 +1,15 @@
 package com.example.myapplication;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyboardShortcutGroup;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     EditText place, item,sum;
+    TextView text;
     Button insert,delete;
     DBHelper DB;
 
@@ -26,9 +30,13 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        text = findViewById(R.id.text);
         place = findViewById(R.id.place);
         item = findViewById(R.id.item);
         sum = findViewById(R.id.sum);
@@ -40,15 +48,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         DB = new DBHelper(this);
+        Intent i = getIntent();
 
-            //логика для кнопки показа списка|
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                startActivity(new Intent(MainActivity.this, Userlist.class));
-//            }
-//        });
+        String pIntent = i.getStringExtra("PLACE");
+        String iIntent = i.getStringExtra("ITEMS");
+        String sIntent = i.getStringExtra("SUM");
+
+        if(pIntent != null || iIntent != null || sIntent != null){
+
+            text.setText("Change data");
+            place.setText(pIntent);
+            item.setText(iIntent);
+            sum.setText(sIntent);
+        }
+
+
 
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, "Ошибка", Toast.LENGTH_SHORT).show();
                 }
+//                recreate();
                 startActivity(new Intent(MainActivity.this, Userlist.class));
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
 
@@ -83,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                DB.deleteAll("Userdetails");
+                DB.deleteAll("Notes");
 
                startActivity(new Intent(MainActivity.this, Userlist.class));
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);

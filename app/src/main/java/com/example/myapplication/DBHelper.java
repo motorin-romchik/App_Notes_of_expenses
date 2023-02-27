@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Calendar;
+
 
 public class DBHelper<result> extends SQLiteOpenHelper {
-//    private static final  int SQL_CREATE_ENTRIES = 1;
 
-//    int id = 0; //id счетчик для инициализации элементов в БД
 
     public DBHelper(Context context) {
         super(context, "Userdata.db",null,1);
@@ -19,13 +19,13 @@ public class DBHelper<result> extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB) {
 //        DB.execSQL("create Table Userdetails(id INTEGER ,place TEXT, item TEXT, sum TEXT)");
-                DB.execSQL("create Table Userdetails(place TEXT, item TEXT, sum TEXT)");
+                DB.execSQL("create Table Notes(time TEXT, place TEXT, item TEXT, sum TEXT)");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase DB, int i, int i1) {
-        DB.execSQL("drop Table if exists Userdetails");
+        DB.execSQL("drop Table if exists Notes");
 //        onCreate(DB);//создание новой версии таблицы после ужадения старой таблицы
 //        DB.execSQL(String.valueOf(SQL_CREATE_ENTRIES));
 
@@ -36,12 +36,28 @@ public class DBHelper<result> extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        Calendar calendar = Calendar.getInstance();
+        String d = String.valueOf(calendar.get(Calendar.DATE));
+        String mo = String.valueOf((calendar.get(Calendar.MONTH))+1);
+        String y = String.valueOf(calendar.get(Calendar.YEAR));
+        String h = String.valueOf(calendar.get(Calendar.HOUR));
+        String m = String.valueOf(calendar.get(Calendar.MINUTE));
+        String s = String.valueOf(calendar.get(Calendar.SECOND));
+
+        mo = createIdeal(mo);
+        d = createIdeal(d);
+        h = createIdeal(h);
+        m = createIdeal(m);
+        s = createIdeal(s);
+
+        String timeC = y+mo+d+h+m+s;
+        contentValues.put("time",timeC);
         contentValues.put("place",place);
         contentValues.put("item",item);
         contentValues.put("sum",sum);
+        timeC = null;
 
-
-        long result = DB.insert("Userdetails",null,contentValues);
+        long result = DB.insert("Notes",null,contentValues);
 
         if (result == -1)
             return false;
@@ -53,7 +69,7 @@ public class DBHelper<result> extends SQLiteOpenHelper {
     public Cursor getdata(){
         SQLiteDatabase DB = this.getWritableDatabase();
 
-        Cursor cursor = DB.rawQuery("Select * from Userdetails",null);
+        Cursor cursor = DB.rawQuery("Select * from Notes",null);
 //        Cursor cursor1 = DB.rawQuery("Select id from Userdetails where id = '3'",);
 
         return cursor;
@@ -67,14 +83,14 @@ public class DBHelper<result> extends SQLiteOpenHelper {
 //        DB.delete("SQLITE_SEQUENCE","NAME=?",new String []{table});
 //        int affectedRows = DB.delete(table,null,null);
 //        return affectedRows > 1;
-        DB.delete("Userdetails",null,null);
+        DB.delete("Notes",null,null);
         return true;
 
     }
-    public boolean deleteParam(String p, String i, String s){
+    public boolean deleteParam(String keytime){
         SQLiteDatabase DB = this.getWritableDatabase();
-        DB.delete("Userdetails","place=? and item=? and sum=?",new String[]{p,i,s});
-
+//        DB.delete("Notes","place=? and item=? and sum=?",new String[]{p,i,s});
+        DB.delete("Notes","time=?",new String[]{keytime});
 //        try {
 //            DB.delete("Userdetails", "item=?", new String[]{i});
 
@@ -85,32 +101,8 @@ public class DBHelper<result> extends SQLiteOpenHelper {
     public int deleteuserdata(int  id) {
 //        //должен передеать массив id элемнтов для удаления
         SQLiteDatabase DB = this.getWritableDatabase();
-        int res = DB.delete("Userdetails", "id = ?", new String[]{String.valueOf(id)});
+        int res = DB.delete("Notes", "id = ?", new String[]{String.valueOf(id)});
 
-//        while(!CheckIsDataAlreadyInDBorNot(id)){
-//            id++;
-//        }
-//        if(CheckIsDataAlreadyInDBorNot(id)) {
-//            int res = DB.delete("Userdetails", "id = ?", new String[]{String.valueOf(id)});
-//        }
-//>-
-//        SQLiteDatabase DB = this.getWritableDatabase();
-//        int f = id;
-//        int result = DB.delete("Userdetails","id = ?", new String[]{String.valueOf(id)});
-//        if(result <= 1){
-//            do{
-//                f++;
-//                result = DB.delete("Userdetails","id = ?", new String[]{String.valueOf(f)});
-//
-//        }while(result > 1);
-//        }
-        //<-
-
-//        try{
-//        int result = DB.delete("Userdetails","id = ?", new String[]{String.valueOf(id)});}
-//        catch (Exception| Error e){
-//            System.out.println("Cool");
-//        }
 
         int realid = 1;
 //        do {
@@ -156,7 +148,7 @@ public class DBHelper<result> extends SQLiteOpenHelper {
         public boolean CheckIsDataAlreadyInDBorNot(int position){
             SQLiteDatabase DB = this.getWritableDatabase();
             String thId = String.valueOf(position);
-            String Query = "Select *from Userdetails where id = " + thId;
+            String Query = "Select *from Notes where id = " + thId;
             Cursor cursor = DB.rawQuery(Query,null);
                 if(cursor.getCount() <= 0){
                     cursor.close();
@@ -179,8 +171,16 @@ public class DBHelper<result> extends SQLiteOpenHelper {
 
 
 //        int result = DB.update("Userdetails", refreshval,"id = ?",new String[] {String.valueOf(id)});
-        int result = DB.delete("Userdetails","id = ?",new String[]{String.valueOf(id)});
+        int result = DB.delete("Notes","id = ?",new String[]{String.valueOf(id)});
         return result;
+
+    }
+
+    public String createIdeal(String val){
+        int var = Integer.valueOf(val); //get int from str
+        val = (var < 10) ? "0"+val: val;
+
+        return val;
 
     }
 

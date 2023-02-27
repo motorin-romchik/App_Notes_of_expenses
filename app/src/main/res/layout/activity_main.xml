@@ -4,67 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:background="#A1FBE9"
 
-    android:padding="10dp">
+    android:padding="10dp"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/text"
+        style="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Введите данные"
-        android:textSize="35dp"
-        android:textColor="#121F6A"
-        android:gravity="center"
         android:layout_marginTop="24dp"
-        style="bold"
-        />
+        android:fontFamily="@font/almendra_sc"
+        android:gravity="center"
+        android:shadowColor="@color/purple_700"
+        android:text="Input data"
+        android:textColor="@color/black"
+        android:textSize="40dp" />
+
     <EditText
         android:id="@+id/place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
         android:layout_below="@+id/text"
-        android:hint="Место" />
+        android:fontFamily="@font/almendra_sc"
+        android:hint="Shop or Mall"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="24dp" />
+
     <EditText
         android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="4"
-        android:textSize="24dp"
         android:layout_below="@+id/place"
-        android:hint="Товары"/>
+        android:fontFamily="@font/almendra_sc"
+        android:hint="Items"
+        android:maxLines="4"
+
+        android:textColor="@color/black"
+        android:textSize="24dp" />
+
     <EditText
         android:id="@+id/sum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
         android:layout_below="@+id/item"
-        android:hint="Сумма"/>
+        android:fontFamily="@font/almendra_sc"
+        android:hint="Total sum"
+        android:inputType="number"
+        android:maxLines="2"
+
+        android:textColor="@color/black"
+        android:textSize="24dp" />
+
     <Button
         android:id="@+id/btnInsert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ввод"
-        android:textSize="24dp"
         android:layout_below="@+id/sum"
-        android:layout_marginTop="20dp"/>
-<!--    <Button-->
-<!--        android:id="@+id/btnView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Список"-->
-<!--        android:textSize="24dp"-->
-<!--        android:layout_below="@+id/btnInsert"-->
-<!--        android:layout_marginTop="20dp"/>-->
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#A9C5C1BB"
+
+        android:elegantTextHeight="true"
+        android:fontFamily="@font/almendra_sc"
+        android:text="Create note"
+        android:textSize="24dp"
+        app:cardCornerRadius="5dp" />
+    <!--    <Button-->
+    <!--        android:id="@+id/btnView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Список"-->
+    <!--        android:textSize="24dp"-->
+    <!--        android:layout_below="@+id/btnInsert"-->
+    <!--        android:layout_marginTop="20dp"/>-->
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Очистить список"
-        android:textSize="24dp"
         android:layout_below="@id/btnInsert"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#A9C5C1BB"
+        android:elegantTextHeight="true"
+        android:fontFamily="@font/almendra_sc"
+
+        android:text="Delete all"
+        android:textSize="24dp"
+        app:cardCornerRadius="50dp" />
 
 
 </RelativeLayout>

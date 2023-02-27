@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="12dp"
-    app:cardCornerRadius="16dp"
+    app:cardElevation="13dp"
+    app:cardCornerRadius="30dp"
     android:layout_margin="16dp"
-
+    android:id = "@+id/block"
     android:backgroundTint="#F1DB1A"
 
     >
@@ -14,8 +14,9 @@
     <LinearLayout
         android:layout_width="301dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="20dp"
         android:orientation="vertical"
+
 
         >
 
@@ -27,14 +28,16 @@
 
             <TextView
                 style="bold"
+                android:fontFamily="@font/almendra_sc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Место: "
+                android:text="Shop: "
                 android:textColor="#000000"
                 android:textSize="24dp" />
 
             <TextView
                 android:id="@+id/textplace"
+                android:fontFamily="@font/almendra_sc"
                 style="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,9 +53,10 @@
 
             <TextView
                 style="bold"
+                android:fontFamily="@font/almendra_sc"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Затраты:\n"
+                android:text="Products:\n"
                 android:textColor="@color/black"
                 android:textSize="24dp" />
 
@@ -61,6 +65,7 @@
 
         <TextView
             android:id="@+id/textitem"
+            android:fontFamily="@font/almendra_sc"
             style="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,13 +80,15 @@
 
             <TextView
                 style="bold"
+                android:fontFamily="@font/almendra_sc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Сумма: "
+                android:text="Sum: "
                 android:textColor="@color/black"
                 android:textSize="24dp" />
 
             <TextView
+                android:fontFamily="@font/almendra_sc"
                 android:id="@+id/textsum"
                 style="bold"
                 android:layout_width="wrap_content"
@@ -92,16 +99,64 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:src="@android:drawable/ic_menu_delete"
-        android:id="@+id/btnDelete1"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_gravity="right|bottom"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="3dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/date"
+            android:fontFamily="@font/almendra_sc"
+
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:backgroundTint="#030978"
+            android:gravity="center_horizontal"
+            android:textSize="15dp"
+            app:cardCornerRadius="10dp"
+
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="340dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical">
 
 
-        android:layout_gravity="center_vertical"
-        />
+        <ImageView
+            android:id="@+id/btnChange"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:hapticFeedbackEnabled="true"
+            android:visibility="invisible"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:hapticFeedbackEnabled="true"
+
+
+            android:src="@android:drawable/ic_menu_delete"
+            android:visibility="invisible" />
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
